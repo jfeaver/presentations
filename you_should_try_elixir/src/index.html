@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Functional Programming with Elixir (and Ruby)</title>
+
+    <meta name="description" content="A programming talk presented at YEGRB on December 16th">
+    <meta name="author" content="Nathan Feaver">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/agilestyle.css" id="theme">
+    <link rel="stylesheet" href="css/addon/elixir.css" id="addon-elixir">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+      <script src="lib/js/html5shiv.js"></script>
+      <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+      <div id="logo_container">
+        <img src="/images/AgileStyle-Logo-white-200x40.png">
+      </div>
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>You Should Try Elixir</h1>
+          <p>
+          <h3>Nathan Feaver, Senior Developer @ AgileStyle</h3>
+          </p>
+        </section>
+        <section>
+          <section>
+            <h2>Example: FizzBuzz</h2>
+            <table id='fizzbuzz-definition'>
+              <tbody>
+                <tr>
+                  <td class='lhs' rowspan="4" nowrap>fizzbuzz(n) =</td>
+                  <td class='lhs big-squigly' rowspan="4">{</td>
+                  <td>FizzBuzz <i>if</i> rem( n/3 ) = 0 and rem( n/5 ) = 0</td>
+                </tr>
+                <tr>
+                  <td>Fizz &nbsp;&nbsp;&nbsp;&nbsp;<i>if</i> rem( n/3 ) = 0</td>
+                </tr>
+                <tr>
+                  <td>Buzz &nbsp;&nbsp;&nbsp;&nbsp;<i>if</i> rem( n/5 ) = 0</td>
+                </tr>
+                <tr>
+                  <td>n</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section id='fizzbuzz'>
+            <h2>Example: FizzBuzz</h2>
+            <pre><code data-trim class='elixir'>
+defmodule FizzBuzz do
+  def fizz_word(0, 0, _), do: "FizzBuzz"
+  def fizz_word(0, _, _), do: "Fizz"
+  def fizz_word(_, 0, _), do: "Buzz"
+  def fizz_word(_, _, n), do: n
+
+  def fizzbuzz(n) do
+    fizz_word( rem(n,3), rem(n,5), n )
+  end
+
+  def result(n) do
+    Enum.map(1..n, fn(n) -&gt;
+      fizzbuzz(n)
+    end)
+  end
+
+  def print(n) do
+    result(n)
+      |&gt; Enum.join(", ")
+      |&gt; IO.puts
+  end
+end
+
+FizzBuzz.print(100)
+            </code></pre>
+            <a href='#/pattern-matching'>Pattern Matching</a> | <a href='#/pipe-operator'>Pipe Operator</a>
+            <aside class='notes'>
+              Functional Bits: pattern matching, pipe operator, recursion features
+            </aside>
+          </section>
+          <section class='quotation'>
+            <blockquote><div class='ldquo'>&ldquo;</div>Elixir has changed the way I think about programming.  Not just in terms of "Oh, its a functional language", it's actually changed my conception of what it means to program.<span class="author">~ Dave Thomas</span></blockquote>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Why Should I Try Elixir?</h2>
+          </section>
+          <section>
+            <h2>Other People Are Doing It</h2>
+          </section>
+          <section class='quotation'>
+            <blockquote><div class='ldquo'>&ldquo;</div>Elixir has changed the way I think about programming.  Not just in terms of "Oh, its a functional language", it's actually changed my conception of what it means to program.<span class="author">~ Dave Thomas</span></blockquote>
+            <small class='source'>Taken from: <a href="http://confreaks.com/videos/4119-elixirconf2014-opening-keynote-think-different">Think Different</a></small>
+          </section>
+          <section class='quotation'>
+            <blockquote><div class='ldquo'>&ldquo;</div>I want to long term use [Elixir and the Phoenix Framework] to replace all of my client work and everything I want to build personally<span class="author">~ Chris McCord</span></blockquote>
+            <small class='source'>Taken from: <a href="http://confreaks.com/videos/4132-elixirconf2014-rise-of-the-phoenix-building-an-elixir-web-framework">Rise of The Phoenix - Building an Elixir Web Framework</a></small>
+          </section>
+          <section class='quotation'>
+            <blockquote><div class='ldquo'>&ldquo;</div>Programming in Erlang sucks. Elixir is everything good about Erlang and none — almost none — of the bad.<span class="author">~ Devin Torres</span></blockquote>
+            <small class='source'>Taken from: <a href="http://devintorr.es/blog/2013/01/22/the-excitement-of-elixir/">The Excitement of Elixir</a></small>
+            <aside class='notes'>
+              Devin Torres is a well-known contributor in the erlang open source community.
+            </aside>
+          </section>
+          <section>
+            <h3>José Valim</h3>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Why Should I Try Elixir?</h2>
+          </section>
+          <section>
+            <h2>It's Built on the Erlang Virtual Machine</h2>
+          </section>
+          <section>
+            <h2>Erlang</h2>
+            <p>Erlang was originally developed in 1986 by Ericsson for telephony applications to support highly concurrent systems</p>
+            <ul>
+              <li>Mature Language/Tools/Community</li>
+              <li>Concurrency (OTP)</li>
+              <li>Distributed (OTP)</li>
+              <li>Fault Tolerant</li>
+              <li>Hot code swapping</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Erlang libraries are simple to use!</h2>
+            <p>Elixir doesn't have built-in random or time libraries (although there are multiple packages).  Let's use Erlang's libraries:</p>
+            <pre><code data-trim class='elixir'>
+defmodule Random do
+  def uniform do
+    :random.uniform
+  end
+
+  def seed do
+    :random.seed(:erlang.now)
+  end
+end
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Why Should I Try Elixir?</h2>
+          </section>
+          <section>
+            <h2>It's Easy to Get Started</h2>
+            <ul>
+              <li>Ruby-like Syntax</li>
+              <li><a href="http://elixir-lang.org/getting_started/1.html">elixir-lang.org/getting_started/1.html</a></li>
+              <li><cite>Programming Elixir</cite> – Dave Thomas</li>
+              <li><a href="http://exercism.io/">Exercism.io</a></li>
+            </ul>
+          </section>
+          <section>
+            <h2>Great Toolset for a Young Language</h2>
+            <ul>
+              <li><code>brew install elixir</code></li>
+              <li>Rake ~&gt; Mix</li>
+              <li>Bundler ~&gt; Hex</li>
+              <li>IRb ~&gt; IEx</li>
+              <li>RSpec ~&gt; ExUnit</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Why Should I Try Elixir?</h2>
+          </section>
+          <section>
+            <h2>Curiosity About Functional Languages</h2>
+            <aside class='notes'>Other option I would advocate is Closure</aside>
+          </section>
+          <section>
+            <h2>Curiosity About Concurrency</h2>
+            <a href='#/concurrency'>Concurrency</a>
+          </section>
+          <section>
+            <h2>Metaprogramming</h2>
+            <pre><code data-trim class='elixir'>
+defmacro match?(left, right) do
+  quote do
+    case unquote(right) do
+      unquote(left) -&gt;
+        true
+      _ -&gt;
+        false
+    end
+  end
+end
+            </code></pre>
+            <pre><code data-trim class='elixir'>
+iex&gt; list = [{:a,1},{:b,2},{:a,3}]
+[a: 1, b: 2, a: 3]
+iex&gt; Enum.filter list, fn (thing) -&gt; match?({:a, _}, thing) end
+[a: 1, a: 3]
+            </code></pre>
+            <small class='source'>Taken from: <a href="http://devintorr.es/blog/2013/06/11/elixir-its-not-about-syntax/">Elixir: It's Not About Syntax</a></small>
+            <aside class="notes">Built from the beginning with a focus on metaprogramming using macros</aside>
+          </section>
+          <section>
+            <h2>The Phoenix Web Framework</h2>
+            <img src='/images/phoenix.png' />
+          </section>
+          <section>
+            <h2>Jobs!</h2>
+            <small>But not in Edmonton</small>
+          </section>
+        </section>
+
+        <section>
+          <h2>Okay, I Want to Try Elixir!</h2>
+          <ul>
+            <li><code>brew install elixir</code></li>
+            <li><a href="http://elixir-lang.org/">elixir-lang.org</a></li>
+            <li><a href="http://exercism.io/">Exercism.io</a></li>
+            <li><cite>Programming Elixir</cite> – Dave Thomas</li>
+            <li>Distribution/Concurrency Tutorial: <a href="https://howistart.org/posts/elixir/1">How I Start. Elixir With José Valim: Portal</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>THE END</h1>
+          <h4>nathan@agilestyle.com</h4>
+          <a href="https://github.com/jfeaver/talk-try-elixir">Slides on GitHub: jfeaver/talk-try-elixir</a>
+        </section>
+
+        <section>
+          <section>
+            <h2>Some More Elixir</h2>
+          </section>
+          <section>
+            <h2>Head | Tail Recursion</h2>
+            <pre><code data-trim class='elixir'>
+defmodule Math do
+  def sum_list([head|tail], accumulator) do
+    sum_list(tail, head + accumulator)
+  end
+
+  def sum_list([], accumulator) do
+    accumulator
+  end
+end
+
+Math.sum_list([1, 2, 3], 0) #=&gt; 6
+            </code></pre>
+            <small class='source'>Taken from: <a href="http://elixir-lang.org/getting_started/9.html">Elixir Getting Started: Recursion</a></small>
+          </section>
+          <section>
+            <h2>Immutability</h2>
+          </section>
+          <section id='concurrency'>
+            <h2>Concurrency/Distribution (OTP)</h2>
+            <pre><code data-trim class='elixir'>
+# Compile the module and create a process that evaluates `area_loop` in the shell
+pid = spawn(fn -&gt; Geometry.area_loop() end) #=&gt; #PID<0.40.0>
+
+# Send a message to `pid` that will match a pattern in the receive statement
+send pid, {:rectangle, 2, 3}
+#=&gt; Area = 6
+#   {:rectangle,2,3}
+
+send pid, {:circle, 2}
+#=&gt; Area = 12.56000000000000049738
+#   {:circle,2}
+
+# The shell is also a process, you can use `self` to get the current pid
+self() #=&gt; #PID<0.27.0>
+            </code></pre>
+            <small class='source'>Taken from: <a href="http://learnxinyminutes.com/docs/elixir/">Learn X in Y Minutes - Elixir</a></small>
+            <aside class='notes'>
+              # Elixir relies on the actor model for concurrency. All we need to write
+              # concurrent programs in elixir are three primitives: spawning processes,
+              # sending messages and receiving messages.
+            </aside>
+          </section>
+          <section id='pattern-matching'>
+            <h2>Pattern Matching</h2>
+            <pre><code data-trim class='iex'>
+iex&gt; a = [ 1,2,3 ]
+iex&gt; b = [[ 1,2,3 ]]
+iex&gt; [c] = [[ 1,2,3 ]]
+iex&gt; a == c
+true
+iex&gt; [ x,y,z ] = [ 1,2,3 ]
+iex&gt; z
+3
+iex&gt; "Today is " &lt;&gt; date = "Today is December 16th"
+iex&gt; date
+"December 16th"
+            </code></pre>
+            <pre><code data-trim class='elixir'>
+defmodule MyApp do
+  def callback(:ok, data) do
+    # success
+  end
+
+  def callback(:error, data) do
+    # handle failure
+  end
+end
+            </code></pre>
+            <a href='#/fizzbuzz'>Back To FizzBuzz</a>
+            <aside class='notes'>
+              pervasive
+              You're not assigning 1 to a, you're challenging elixir to find a way to make that true
+            </aside>
+          </section>
+          <section id='pipe-operator'>
+            <h2>Pipe Operator</h2>
+            <p>
+              The pipe operator(<code>|&gt;</code>) is most helpful when
+              transforming data through a sequence.  The operator pipes
+              the result of an expression into the first argument of the
+              next function.  Confusing, nested function calls no longer
+              need temporary variables to make them readable:
+            </p>
+            <pre><code data-trim class='iex'>
+# Confusing, nested function calls
+def print(n) do
+  IO.puts( Enum.join( result(n), ", " ) )
+end
+
+# versus using the pipe operator
+def print(n) do
+  result(n)
+    |&gt; Enum.join(", ")
+    |&gt; IO.puts
+end
+            </code></pre>
+            <a href='#/fizzbuzz'>Back To FizzBuzz</a>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Coming Back to Ruby</h2>
+            <h4>Can I apply this in my day job?</h4>
+          </section>
+          <section>
+            <h2>Updating Records Functionally?</h2>
+            <pre><code data-trim class='ruby'>
+it 'releases one invite credit when it is withdrawn' do
+  sender = @invite.sender
+  expect{ @invite.withdraw; sender.reload }.
+    to change{ sender.available_invite_credits.length }.
+    by(1)
+end
+            </code></pre>
+            <pre><code data-trim class='ruby'>
+it 'releases one invite credit when it is withdrawn' do
+  sender = @invite.sender
+  expect{ @invite.withdraw }.
+    to change{ User.available_invite_credits(sender.id).length }.
+    by(1)
+end
+            </code></pre>
+          </section>
+          <section>
+            <h2>Another Attempt</h2>
+            <pre><code data-trim class='ruby'>
+# find the author counts
+author_counts = []
+author_counts_index = -1
+current_author = ''
+for i in 0...commits.length
+  commit = commits[i]
+  if commit.author == current_author
+    author_counts[author_counts_index][1] += 1
+  else
+    current_author = commit.author
+    author_counts &lt;&lt; [commit.author, 1]
+    author_counts_index += 1
+  end
+end
+            </code></pre>
+            <pre><code data-trim class='ruby'>
+commits.sort_by do |commit|
+  commit.author
+end.
+  chunk do |commit|
+    commit.author
+  end.
+    each do |author, author_commits|
+      puts "#{author} has #{author_commits.count} commits"
+    end
+            </code></pre>
+          </section>
+          <section>
+            <h2>Ruby is an OO Language, Default to OO Idioms</h2>
+            <ul>
+              <li>Use functional style blocks</li>
+              <li>Bottom-up versus Top-down</li>
+              <li>Tell Don't Ask</li>
+              <li>Read POODR by Sandi Metz</li>
+            </ul>
+            <br/>
+            <br/>
+            <p>
+              My approaches to some Ruby problems have probably changed in subtle ways.
+              Learning Elixir has been fun and will help me learn other languages (and
+              their strengths) faster. I'm probably also better prepared to
+              use Proc objects, the Proc#curry method, and Enumerator::Lazy objects
+              but directly practicing them would be even better (perhaps with katas).
+            </p>
+          </section>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+  theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+  transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+    // Parallax scrolling
+    // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+    // parallaxBackgroundSize: '2100px 900px',
+
+    // Optional libraries used to extend on reveal.js
+  dependencies: [
+  { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+  { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});
+
+    </script>
+
+  </body>
+</html>
